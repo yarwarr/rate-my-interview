@@ -16,6 +16,7 @@ export function DrizzleAdapter(db: PlanetScaleDatabase): Adapter {
         name: userData.name,
         image: userData.image,
       });
+      console.log("Just added a user", userData)
       const rows = await db
         .select()
         .from(users)
@@ -32,6 +33,7 @@ export function DrizzleAdapter(db: PlanetScaleDatabase): Adapter {
         .where(eq(users.id, id))
         .limit(1);
       const row = rows[0];
+      console.log('Got a user ', row)
       return row ?? null;
     },
     async getUserByEmail(email) {
