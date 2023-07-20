@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Icons } from "./Icons";
-import { buttonVariants } from "./ui/Button";
+import { Icons } from "./icons";
+import { buttonVariants } from "./ui/Button1";
 import { getAuthSession } from "../lib/auth/index";
 import UserAccountNav from "./UserAccountNav";
 const Navbar = async () => {

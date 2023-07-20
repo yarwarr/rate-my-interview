@@ -1,6 +1,6 @@
 "use client"
 import { FC, useState } from 'react'
-import { Button } from './ui/Button'
+import { Button } from './ui/Button1'
 import { cn } from '@/lib/utils'
 import { Icons } from './Icons'
 import { signIn } from 'next-auth/react'
