@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "introspect": "drizzle-kit introspect:mysql",
-    "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts"
+    "migrate": "drizzle-kit generate:mysql",
+    "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
+    "studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.15",
@@ -27,6 +29,7 @@
     "autoprefixer": "10.4.14",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
+    "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
     "drizzle-orm": "^0.27.0",
@@ -35,6 +38,7 @@
     "lucide-react": "^0.259.0",
     "next": "13.4.9",
     "next-auth": "^4.22.1",
+    "next-contentlayer": "^0.3.4",
     "next-themes": "^0.2.1",
     "postcss": "8.4.25",
     "radix-ui": "^1.0.1",

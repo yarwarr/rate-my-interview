@@ -1,18 +1,31 @@
 import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, int, varchar, timestamp, text, index,datetime } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
-
-export var companies = mysqlTable("companies", {
+export const companies = mysqlTable("companies", {
 	id: int("id").autoincrement().primaryKey().notNull(),
 	name: varchar("name", { length: 255 }).notNull(),
-},
-(table) => {
+	logo: varchar("logo", { length: 255 }).notNull(),
+	rating: varchar("rating", { length: 3 }).notNull(),
+	reviewsLink: varchar("reviewsLink", { length: 255 }).notNull(),
+	reviewsCount: varchar("reviewsCount", { length: 10 }).notNull(),
+	reviewsText: varchar("reviewsText", { length: 255 }).notNull(),
+	salariesLink: varchar("salariesLink", { length: 255 }).notNull(),
+	salariesCount: varchar("salariesCount", { length: 10 }).notNull(),
+	jobsLink: varchar("jobsLink", { length: 255 }).notNull(),
+	jobsCount: varchar("jobsCount", { length: 10 }).notNull(),
+	location: varchar("location", { length: 255 }).notNull(),
+	locationLink: varchar("locationLink", { length: 255 }).notNull(),
+	companySize: varchar("companySize", { length: 255 }).notNull(),
+	companyType: varchar("companyType", { length: 255 }).notNull(),
+	description: text("description").notNull(),
+  },
+  (table) => {
 	return {
-		name: uniqueIndex("name").on(table.name),
-	}
-});
+	  name: uniqueIndex("name").on(table.name),
+	};
+  });
 
-export var accounts = mysqlTable(
+export const accounts = mysqlTable(
 	'accounts',
 	{
 	  id: varchar('id', { length: 191 }).primaryKey().notNull(),
@@ -38,7 +51,7 @@ export var accounts = mysqlTable(
 	})
   );
   
-  export var sessions = mysqlTable(
+  export const sessions = mysqlTable(
 	'sessions',
 	{
 	  id: varchar('id', { length: 191 }).primaryKey().notNull(),
@@ -56,7 +69,7 @@ export var accounts = mysqlTable(
 	})
   );
   
-  export var users = mysqlTable(
+  export const users = mysqlTable(
 	'users',
 	{
 	  id: varchar('id', { length: 191 }).primaryKey().notNull(),
@@ -72,7 +85,7 @@ export var accounts = mysqlTable(
 	})
   );
   
-  export var verificationTokens = mysqlTable(
+  export const verificationTokens = mysqlTable(
 	'verification_tokens',
 	{
 	  identifier: varchar('identifier', { length: 191 }).primaryKey().notNull(),

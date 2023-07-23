@@ -8,6 +8,20 @@
       "when": 1688833810607,
       "tag": "0000_yellow_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1689898823651,
+      "tag": "0001_rapid_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1689986940520,
+      "tag": "0002_freezing_leader",
+      "breakpoints": true
     }
   ]
 }
