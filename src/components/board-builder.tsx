@@ -2,12 +2,12 @@
 
 import * as React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { companies} from "@/db/schema"
-import { getSubcategories, sortOptions } from "@/config/products"
+import { toast } from "sonner"
+
+import { sortOptions } from "@/config/products"
 import { cn } from "@/lib/utils"
 import { useDebounce } from "@/hooks/use-debounce"
 import { Button } from "@/components/ui/Button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,8 +17,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import {
   Sheet,
@@ -30,23 +28,20 @@ import {
 } from "@/components/ui/sheet"
 import { Slider } from "@/components/ui/slider"
 import { Icons } from "@/components/Icons"
-import { MultiSelect } from "@/components/multi-select"
 import { PaginationButton } from "@/components/pagers/pagination-button"
-import { CompanyCard } from "@/components/company-card"
+import { CompanyCard } from "./company-card"
 
-interface CompaniesProps {
+interface BoardBuilderProps {
   companies: Company[]
   pageCount: number
-  companyType?: Company["companyType"]
-  storePageCount?: number
+  subcategory: string | null
 }
 
-export function Companies({
+export function BoardBuilder({
   companies,
   pageCount,
-  companyType,
-  storePageCount,
-}: CompaniesProps) {
+  subcategory,
+}: BoardBuilderProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -56,8 +51,6 @@ export function Companies({
   const page = searchParams?.get("page") ?? "1"
   const per_page = searchParams?.get("per_page") ?? "8"
   const sort = searchParams?.get("sort") ?? "createdAt.desc"
-  const store_ids = searchParams?.get("store_ids")
-  const store_page = searchParams?.get("store_page") ?? "1"
 
   // Create query string
   const createQueryString = React.useCallback(
@@ -93,58 +86,7 @@ export function Companies({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedPrice])
 
-  // Category filter
-  const [selectedCategories, setSelectedCategories] = React.useState<
-    Option[] | null
-  >(null)
 
-  React.useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          categories: selectedCategories?.length
-            ? // Join categories with a dot to make search params prettier
-              selectedCategories.map((c) => c.value).join(".")
-            : null,
-        })}`
-      )
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategories])
-
-  // Subcategory filter
-  const [selectedSubcategories, setSelectedSubcategories] = React.useState<
-    Option[] | null
-  >(null)
-
-  React.useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          subcategories: selectedSubcategories?.length
-            ? selectedSubcategories.map((s) => s.value).join(".")
-            : null,
-        })}`
-      )
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSubcategories])
-
-  // Store filter
-  const [storeIds, setStoreIds] = React.useState<number[] | null>(
-    store_ids?.split(".").map(Number) ?? null
-  )
-
-  React.useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          store_ids: storeIds?.length ? storeIds.join(".") : null,
-        })}`
-      )
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeIds])
 
   return (
     <div className="flex flex-col space-y-6">
@@ -204,7 +146,6 @@ export function Companies({
                   />
                 </div>
               </div>
-              
             </div>
             <div>
               <Separator className="my-4" />
@@ -218,16 +159,10 @@ export function Companies({
                       router.push(
                         `${pathname}?${createQueryString({
                           price_range: 0 - 100,
-                          store_ids: null,
-                          categories: null,
-                          subcategories: null,
                         })}`
                       )
 
                       setPriceRange([0, 100])
-                      setSelectedCategories(null)
-                      setSelectedSubcategories(null)
-                      setStoreIds(null)
                     })
                   }}
                   disabled={isPending}
@@ -268,20 +203,28 @@ export function Companies({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {!isPending && !companies.length ? (
+      {!isPending && !products.length ? (
         <div className="mx-auto flex max-w-xs flex-col space-y-1.5">
-          <h1 className="text-center text-2xl font-bold">No Companies found</h1>
+          <h1 className="text-center text-2xl font-bold">No products found</h1>
           <p className="text-center text-muted-foreground">
-            Try changing your filters, or check back later for new companies
+            Try changing your filters, or check back later for new products
           </p>
         </div>
       ) : null}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {companies.map((company) => (
-          <CompanyCard key={company.id} company={company} />
+        {products.map((product) => (
+          <CompanyCard
+            key={product.id}
+            variant="switchable"
+            company={product}
+            isAddedToCart={cartItems
+              .map((item) => item.productId)
+              .includes(product.id)}
+            onSwitch={() => addToCart(product)}
+          />
         ))}
       </div>
-      {companies.length ? (
+      {products.length ? (
         <PaginationButton
           pageCount={pageCount}
           page={page}

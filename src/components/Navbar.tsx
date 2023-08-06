@@ -17,7 +17,15 @@ const Navbar = async () => {
                         Rate
                     </p>
                 </Link>
-                <Combobox />
+                <Link href="/company" className="flex gap-2 items-center">
+                    <p className="hidden text-zinc-700 text-sm font-medium md:block">
+                        Companies
+                    </p>
+                </Link>
+                <div className="flex gap-2 items-center">
+                    <Combobox />
+                </div>
+                
 
                 {/* search bar */}
 

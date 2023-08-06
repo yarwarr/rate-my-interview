@@ -69,6 +69,13 @@ export function Combobox() {
     }
   }, [isOpen])
 
+  const navigate = (url: string) => {
+    router.push(url);
+    setTimeout(() => {
+      window.location.reload(); // This will reload the page after the delay
+    }, 1000);
+  };
+
   return (
     <>
       <Button
@@ -112,7 +119,7 @@ export function Combobox() {
                   <CommandItem
                     key={company.id}
                     onSelect={() =>
-                      handleSelect(() => router.push(`/company/${company.id}`))
+                      navigate(`/company/${company.id}`)
                     }
                   >
                     

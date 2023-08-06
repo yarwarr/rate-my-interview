@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { toast } from "sonner"
 
-import { cn, formatPrice } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button, buttonVariants } from "@/components/ui/Button"
 import {
@@ -83,7 +83,6 @@ export function CompanyCard({
         <CardContent className="grid gap-2.5 p-4">
           <CardTitle className="line-clamp-1">{company.name}</CardTitle>
           <CardDescription className="line-clamp-2">
-            {formatPrice(company.rating)}
           </CardDescription>
         </CardContent>
       </Link>

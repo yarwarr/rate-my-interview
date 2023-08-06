@@ -1,5 +1,60 @@
 import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, int, varchar, timestamp, text, index,datetime } from "drizzle-orm/mysql-core"
-import { sql } from "drizzle-orm"
+import { relations, sql } from "drizzle-orm"
+// Run these commands to migrate and then push
+// "migrate": "drizzle-kit generate:mysql",
+// "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
+
+export const stats = mysqlTable("stats", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	company_id: int("company_id").notNull(),
+	positive_experience: varchar("positive_experience", { length: 20 }),
+	negative_experience: varchar("negative_experience", { length: 20 }),
+	neutral_experience: varchar("neutral_experience", { length: 20 }),
+	applied_online: varchar("applied_online", { length: 20 }),
+	recruiter: varchar("recruiter", { length: 20 }),
+	employee_referral: varchar("employee_referral", { length: 20 }),
+	difficulty: varchar("difficulty", { length: 20}),
+  });
+
+
+
+export const faqs = mysqlTable("faqs", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	company_id: int("company_id").notNull(),
+	question: varchar("question", { length: 255 }).notNull(),
+	answer: text("answer").notNull(),
+  });
+export const interview_to_questions = mysqlTable("interview_questions", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	interview_id: int("interview_id").notNull(),
+	question_id: int("question_id").notNull(),
+  });
+
+export const questions = mysqlTable("questions", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	text: text("text").notNull(),
+  });
+export const interviews = mysqlTable("interviews", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	company_id: int("company_id").notNull(),
+	interviewee_id: int("interviewee_id").notNull(),
+	position_id: int("position_id").notNull(),
+	offer_status: varchar("offer_status", { length: 255 }).notNull(),
+	experience: varchar("experience", { length: 255 }).notNull(),
+	difficulty: varchar("difficulty", { length: 255 }).notNull(),
+	interview_process: text("interview_process").notNull(),
+  });
+
+export const positions = mysqlTable("positions", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	company_id: int("company_id").notNull(),
+	name: varchar("name", { length: 255 }).notNull(),
+  });
+
+  export const interviewees = mysqlTable("interviewees", {
+	id: int("id").autoincrement().primaryKey().notNull(),
+	name: varchar("name", { length: 255 }).notNull(),
+  });
 
 export const companies = mysqlTable("companies", {
 	id: int("id").autoincrement().primaryKey().notNull(),
@@ -100,3 +155,86 @@ export const accounts = mysqlTable(
 	  ),
 	})
   );
+
+//    All Relations:-
+
+    // Company has many stats, stats belongs to company
+	export const companyRelations = relations(companies, ({ many }) => ({
+		stats: many(stats),
+		faqs: many(faqs),
+		interviews: many(interviews),
+		positions: many(positions),
+	}))
+
+
+	export const statsRelations = relations(stats, ({ one }) => ({
+		companies: one(companies, {
+			fields: [stats.company_id],
+			references: [companies.id],
+		}),
+	}))
+
+	export const faqsRelations = relations(faqs, ({ one }) => ({
+		companies: one(companies, {
+			fields: [faqs.company_id],
+			references: [companies.id],
+		}),
+	}))
+
+	export const interviewsRelations = relations(interviews, ({ one, many }) => ({
+		companies: one(companies, {
+			fields: [interviews.company_id],
+			references: [companies.id],
+		}),
+		interviewees: one(interviewees, {
+			fields: [interviews.interviewee_id],
+			references: [interviewees.id],
+		}),
+		positions: one(positions, {
+			fields: [interviews.position_id],
+			references: [positions.id],
+		}),
+		interviewToQuestions: many(interview_to_questions)
+
+	}))
+
+	export const positionsRelations = relations(positions, ({ one }) => ({
+		companies: one(companies, {
+			fields: [positions.company_id],
+			references: [companies.id],
+		}),
+		interviews: one(interviews, {
+			fields: [positions.id],
+			references: [interviews.position_id],
+		}),
+	}))
+
+	export const intervieweesRelations = relations(interviewees, ({ one }) => ({
+		interviews: one(interviews, {
+			fields: [interviewees.id],
+			references: [interviews.interviewee_id],
+		}),
+	}))
+
+	export const interviewToQuestionRelations = relations(interview_to_questions, ({ one, }) => ({
+		interviews: one(interviews, {
+			fields: [interview_to_questions.interview_id],
+			references: [interviews.id],
+		}),
+		questions: one(questions, {
+			fields: [interview_to_questions.question_id],
+			references: [questions.id],
+		}),
+	}))
+
+	export const questionsRelations = relations(questions, ({ one }) => ({
+		interviewToQuestions: one(interview_to_questions, {
+			fields: [questions.id],
+			references: [interview_to_questions.question_id],
+		}),
+	}))
+
+
+
+
+

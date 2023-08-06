@@ -22,6 +22,41 @@
       "when": 1689986940520,
       "tag": "0002_freezing_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1690600938101,
+      "tag": "0003_remarkable_gamma_corps",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1690650784306,
+      "tag": "0004_icy_ezekiel",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1690652992489,
+      "tag": "0005_lucky_puppet_master",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1690654985997,
+      "tag": "0006_cool_talisman",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1690656860703,
+      "tag": "0007_tricky_wolfsbane",
+      "breakpoints": true
     }
   ]
 }
