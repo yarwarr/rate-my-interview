@@ -16,12 +16,12 @@ export const metadata: Metadata = {
   description: "Product description",
 };
 
-interface ProductPageProps {
+interface CompanyPageProps {
   params: {
     companyId: string;
   };
 }
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function CompanyPage({ params }: CompanyPageProps) {
   const productCategories = [
     { title: "Interviews", path: "/interviews" },
     { title: "Ratings", path: "/ratings" },
@@ -65,7 +65,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
       {/* Display all of the pages for a company */}
       {/* Navigation bar */}
-      <div className="sticky top-14 z-30 w-full shrink-0 overflow-hidden bg-background/80 pb-4 pt-6 shadow-md sm:backdrop-blur-md">
+      {/* <div className="sticky top-14 z-30 w-full shrink-0 overflow-hidden bg-background/80 pb-4 pt-6 shadow-md sm:backdrop-blur-md">
         <div className="grid place-items-center overflow-x-auto">
           <div className="inline-flex w-fit items-center rounded border bg-background p-1 text-muted-foreground shadow-2xl">
             {productCategories.map((category) => (
@@ -87,7 +87,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
       <InterviewFeed
         companyId={companyId}
         initialInterviews={initialInterviews}

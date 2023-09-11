@@ -5,3 +5,8 @@ export type ExtendedInterview = interviews & {
     positions: positions,
     interviewToQuestions: interview_to_questions[]
 }
+
+export type Question = {
+    id: number,
+    text: String
+}
