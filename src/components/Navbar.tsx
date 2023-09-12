@@ -28,7 +28,7 @@ const Navbar = async () => {
                 
 
                 {/* search bar */}
-
+                <div className="flex px-7">
                 {session?.user ? (
                     <UserAccountNav user={session.user} />
                 ) : (
@@ -36,7 +36,10 @@ const Navbar = async () => {
                         size: "sm",
                       })}>Sign In</Link>
                 )}
+                
                 <ModeToggle />
+                </div>
+                
 
             </div>
         </div>

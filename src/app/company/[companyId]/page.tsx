@@ -11,6 +11,7 @@ import { Shell } from "@/components/shells/shell";
 import { Star } from "lucide-react";
 import InterviewFeed from "@/components/InterviewFeed";
 import { ExtendedInterview } from "../../../../db";
+import axios from "axios";
 export const metadata: Metadata = {
   title: "Company",
   description: "Product description",
@@ -21,24 +22,14 @@ interface CompanyPageProps {
     companyId: string;
   };
 }
+
 export default async function CompanyPage({ params }: CompanyPageProps) {
-  const productCategories = [
-    { title: "Interviews", path: "/interviews" },
-    { title: "Ratings", path: "/ratings" },
-    { title: "Jobs", path: "/jobs" },
-  ];
-  const activeCategory = "jobs";
   const companyId = Number(params.companyId);
   const initialInterviews: ExtendedInterview[] = [];
-  const company = await db.query.companies.findFirst({
-    where: eq(companies.id, companyId),
-    with: {
-      stats: true,
-      faqs: true,
-    },
-  });
-  const faq = company?.faqs;
-  const stat = company?.stats[0];
+  console.log(companyId)
+  const query = `http://localhost:3000/api/company?company_id=${companyId}`;
+    const { data } = await axios.get(query);
+    const company: Company = data
 
   if (!company) {
     notFound();
@@ -63,31 +54,6 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
         <Star colorProfile="orange" />
         {company.rating}
       </div>
-      {/* Display all of the pages for a company */}
-      {/* Navigation bar */}
-      {/* <div className="sticky top-14 z-30 w-full shrink-0 overflow-hidden bg-background/80 pb-4 pt-6 shadow-md sm:backdrop-blur-md">
-        <div className="grid place-items-center overflow-x-auto">
-          <div className="inline-flex w-fit items-center rounded border bg-background p-1 text-muted-foreground shadow-2xl">
-            {productCategories.map((category) => (
-              <Link
-                aria-label={category.title}
-                key={category.title}
-                href={`/company/${companyId}${category.path}`}
-              >
-                <div
-                  className={cn(
-                    "inline-flex items-center justify-center whitespace-nowrap rounded border-b-2 border-transparent px-3 py-1.5 text-sm font-medium ring-offset-background transition-all hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    category.path === "jobs" &&
-                      "rounded-none border-primary text-foreground hover:rounded-t"
-                  )}
-                >
-                  {category.title}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div> */}
       <InterviewFeed
         companyId={companyId}
         initialInterviews={initialInterviews}
@@ -96,25 +62,25 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
       <div className="mt-8">
         <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
         <ul className="mt-4 space-y-4">
-          {faq?.map((item) => (
+          {company.faqs.map((item) => (
             <li key={item.id}>
-              <h3 className="text-xl font-semibold">{item.question}</h3>
-              <p className="mt-2">{item.answer}</p>
+              <h3 className="text-xl font-semibold">{item?.question}</h3>
+              <p className="mt-2">{item?.answer}</p>
             </li>
           ))}
         </ul>
         {/* Display company statistics */}
-        {stat && (
+        {company.stat && (
           <div className="mt-8">
             <h2 className="text-2xl font-bold">Company Statistics</h2>
             <ul className="mt-4 space-y-2">
-              <li>Positive Experience: {stat.positive_experience}</li>
-              <li>Negative Experience: {stat.negative_experience}</li>
-              <li>Neutral Experience: {stat.neutral_experience}</li>
-              <li>Applied Online: {stat.applied_online}</li>
-              <li>Recruiter: {stat.recruiter}</li>
-              <li>Employee Referral: {stat.employee_referral}</li>
-              <li>Difficulty: {stat.difficulty}</li>
+              <li>Positive Experience: {company.stat.positive_experience}</li>
+              <li>Negative Experience: {company.stat.negative_experience}</li>
+              <li>Neutral Experience: {company.stat.neutral_experience}</li>
+              <li>Applied Online: {company.stat.applied_online}</li>
+              <li>Recruiter: {company.stat.recruiter}</li>
+              <li>Employee Referral: {company.stat.employee_referral}</li>
+              <li>Difficulty: {company.stat.difficulty}</li>
             </ul>
           </div>
         )}
