@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from 'react'
 import { interviews, interviewees, positions } from "@/db/schema";
 import { ExtendedInterview } from '../../db';
-import { formatTimeToNow } from '@/lib/utils';
+// import { formatTimeToNow } from '@/lib/utils';
 import { MessageSquare } from 'lucide-react';
 import QuestionFeed from './QuestionFeed';
 
@@ -21,8 +21,6 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
     const [expanded, setExpanded] = useState(false);
     async function expandQuestions(questions: []) {
         setExpanded(!expanded)
-        console.log(questions)
-        console.log(expanded)
     }
     const pRef = useRef<HTMLDivElement>(null)
     return <div className='rounded-md bg-white shadow'>
@@ -34,7 +32,7 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
                     <span>
                         Posted by u/{interview.interviewees.name + ' '}
                     </span>
-                    {formatTimeToNow(new Date())}
+                    new Date()
                 </div>
                 <a href={`/company/${companyId}/interview/${interview.id}`}>
                     <h1 className='text-lg font-semibold py-2 loading-6 text-gray-900'>
@@ -60,7 +58,6 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
         {expanded && (
             <div className='bg-gray-50 z-20 text-sm p-4 sm:px-6'>
                 {/* Content of your div */}
-                Hi
                 <QuestionFeed questions={interview.interviewToQuestions} />
             </div>
         )}
