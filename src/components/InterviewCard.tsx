@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from 'react'
 import { interviews, interviewees, positions } from "@/db/schema";
 import { ExtendedInterview } from '../../db';
-import { formatTimeToNow } from '@/lib/utils';
+// import { formatTimeToNow } from '@/lib/utils';
 import { MessageSquare } from 'lucide-react';
 import QuestionFeed from './QuestionFeed';
 
@@ -25,7 +25,7 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
         console.log(expanded)
     }
     const pRef = useRef<HTMLDivElement>(null)
-    return <div className='rounded-md bg-white shadow'>
+    return <div className='rounded-md bg-slate-400 shadow'>
         <div className='px-6 py-4 flex justify-between'>
             {/* TODO Postvotes */}
 
@@ -34,7 +34,7 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
                     <span>
                         Posted by u/{interview.interviewees.name + ' '}
                     </span>
-                    {formatTimeToNow(new Date())}
+                    {/* {formatTimeToNow(new Date())} */}
                 </div>
                 <a href={`/company/${companyId}/interview/${interview.id}`}>
                     <h1 className='text-lg font-semibold py-2 loading-6 text-gray-900'>
@@ -51,14 +51,14 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
             </div>
         </div>
 
-        <div className='bg-gray-50 z-20 text-sm p-4 sm:px-6'>
+        <div className='bg-gray-600 z-20 text-sm p-4 sm:px-6'>
             {/* href={`/company/${companyId}/interview/${interview.id}`} */}
             <a className='w-fit flex items-center gap-2 cursor-pointer' onClick={() => expandQuestions(interview.interviewToQuestions)}>
                 <MessageSquare className='h-4 w-4' /> {interview.interviewToQuestions.length} Questions
             </a>
         </div>
         {expanded && (
-            <div className='bg-gray-50 z-20 text-sm p-4 sm:px-6'>
+            <div  className='bg-gray-600 z-20 text-sm p-4 sm:px-6'>
                 {/* Content of your div */}
                 Hi
                 <QuestionFeed questions={interview.interviewToQuestions} />

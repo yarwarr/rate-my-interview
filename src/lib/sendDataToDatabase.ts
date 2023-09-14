@@ -1,14 +1,11 @@
-import Balance from "react-wrap-balancer"
-import fs from 'fs';
-import { Shell } from "@/components/shells/shell"
-import { Combobox } from "@/components/combobox"
-import getAllCompanies from "@/lib/getAllCompanies"
 import path, { dirname } from 'path';
 // import insertCompaniesFromJSON from "@/lib/createCompanies"
 import { drizzle } from 'drizzle-orm/planetscale-serverless'
 import { companies, faqs, stats, positions, interviewees, interviews, interview_to_questions, questions } from "@/db/schema";
 import { connect } from "@planetscale/database";
 import { config } from '@/db/config'
+import fs from 'fs';
+
 // Running out of edge function execution units on vercel free plan
 const companiesDataFile = '/output.json'; // Replace with the correct relative path to output.json in the public directory
 
@@ -176,7 +173,7 @@ async function insertInterviewDataFromFiles() {
       // Insert interview data into the "interviews" table
       const interviewIds = []
       for (let i = 0; i < interviewsData.length; i++) {
-        
+
         const interviewData = interviewsData[i];
         const interviewRecord = {
           company_id: companyId,
@@ -229,32 +226,4 @@ async function insertInterviewDataFromFiles() {
   } catch (error) {
     console.error('Error inserting interview data:', error);
   }
-}
-
-
-
-
-export default async function IndexPage() {
-  // await insertFAQsFromFiles()
-  // const faq = await insertStatsFromFiles()
-  return (
-    <Shell as="div" className="gap-12">
-      <section
-        id="hero"
-        aria-labelledby="hero-heading"
-        className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-32"
-      >
-        <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
-          A Website
-        </h1>
-        <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
-          Enter the company name
-        </Balance>
-        <div className="space-x-4">
-          <Combobox />
-        </div>
-      </section>
-      
-    </Shell>
-  )
 }

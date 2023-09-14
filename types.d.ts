@@ -15,10 +15,25 @@ type Company = {
     companySize: string;
     companyType: string;
     description: string;
+    faqs: Faq[]
+    stat: Stat
   };
 
-type Option = {
-    label: string
-    value: string
+type Faq = {
+    id: number;
+    question: string;
+    answer: string;
 }
+
+type Stat = {
+    id: number;
+    positive_experience: string;
+    neutral_experience: string;
+    negative_experience: string;
+    applied_online: string;
+    employee_referral: string;
+    difficulty: string;
+    recruiter: string;
+}
+
 

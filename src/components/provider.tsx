@@ -14,4 +14,4 @@ function Providers({ children }: React.PropsWithChildren) {
   );
 }
 
-export default Providers;
+export default Providers

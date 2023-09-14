@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { companies } from "@/db/schema";
-import { eq, like} from "drizzle-orm";
-import { db } from "@/db"
 import {z} from 'zod'
+import getACompany from "@/lib/getACompany";
 
 export async function GET(req: Request) {
     const url = new URL(req.url);
@@ -13,10 +11,7 @@ export async function GET(req: Request) {
         }).parse({
             company_id: url.searchParams.get('company_id'),
         })
-        const results = await db.query.companies.findFirst({
-            where: eq(companies.id, parseInt(company_id))
-          })
-
+        const results = await getACompany(parseInt(company_id))
           return NextResponse.json(results)
         
     } catch (error) {
