@@ -19,4 +19,4 @@ const QuestionFeed: FC<QuestionFeedProps> = ({ questions }) => {
     </div>
 }
 
-export default QuestionFeed
+export default QuestionFeed;
