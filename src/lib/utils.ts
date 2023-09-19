@@ -54,3 +54,10 @@ export function formatTimeToNow(date: Date): string {
     },
   })
 }
+
+export function convertToAscii(str: string){
+  const asciiString = str.replace(/[^\x00-\x7F]+/g, "");
+
+  return asciiString;
+  
+}

@@ -12,6 +12,7 @@ import { Star } from "lucide-react";
 import InterviewFeed from "@/components/InterviewFeed";
 // import { ExtendedInterview } from "../../../../db";
 import axios from "axios";
+import FileUpload from "@/components/file-upload";
 export const metadata: Metadata = {
   title: "Company",
   description: "Product description",
@@ -54,6 +55,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
         <Star colorProfile="orange" />
         {company.rating}
       </div>
+      <FileUpload companyId = {companyId} />
       <InterviewFeed
         companyId={companyId}
         initialInterviews={initialInterviews}

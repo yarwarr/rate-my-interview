@@ -2,13 +2,11 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Navbar from "../components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { fontMono, fontSans } from "@/lib/fonts";
-import { SiteHeader } from "@/components/layouts/site-header";
-import { getAuthSession } from "@/lib/auth";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import Providers from "@/components/provider";
+import {Toaster} from 'react-hot-toast'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <Providers>
     <html lang="en" suppressHydrationWarning>
       <body
             className={cn(
@@ -32,10 +31,13 @@ export default function RootLayout({
           >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             
-            <Providers>{children}</Providers>
+            {children}
             <TailwindIndicator />
           </ThemeProvider>
       </body>
+      <Toaster />
     </html>
+    
+    </Providers>
   );
 }

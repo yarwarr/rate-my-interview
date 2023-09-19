@@ -1,8 +1,58 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, int, varchar, timestamp, text, index,datetime } from "drizzle-orm/mysql-core"
-import { relations, sql } from "drizzle-orm"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, int, varchar, timestamp, text, index, datetime, mysqlEnum, primaryKey } from "drizzle-orm/mysql-core"
+import { relations, sql} from "drizzle-orm"
+// @ts-ignore
+import { InferSelectModel, InferInsertModel } from 'drizzle-orm'
+import type { AdapterAccount } from "@auth/core/adapters";
 // Run these commands to migrate and then push
 // "migrate": "drizzle-kit generate:mysql",
 // "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
+
+export const users = mysqlTable("users", {
+	id: varchar("id", { length: 255 }).notNull().primaryKey(),
+	name: varchar("name", { length: 255 }),
+	email: varchar("email", { length: 255 }).notNull(),
+	emailVerified: timestamp("emailVerified", { mode: "date" }),
+	image: varchar("image", { length: 255 }),
+  })
+  
+  export const accounts = mysqlTable(
+	"accounts",
+	{
+	  userId: varchar("userId", { length: 255 }).notNull(),
+	  type: varchar("type", { length: 255 }).$type<AdapterAccount["type"]>().notNull(),
+	  provider: varchar("provider", { length: 255 }).notNull(),
+	  providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
+	  refresh_token: varchar("refresh_token", { length: 255 }),
+	  refresh_token_expires_in: int("refresh_token_expires_in"),
+	  access_token: varchar("access_token", { length: 255 }),
+	  expires_at: int("expires_at"),
+	  token_type: varchar("token_type", { length: 255 }),
+	  scope: varchar("scope", { length: 255 }),
+	  id_token: text("id_token"),
+	  session_state: text("session_state"),
+	},
+	(account) => ({
+	  compoundKey: primaryKey(account.provider, account.providerAccountId),
+	})
+  )
+  
+  export const sessions = mysqlTable("sessions", {
+	sessionToken: varchar("sessionToken", { length: 255 }).notNull().primaryKey(),
+	userId: varchar("userId", { length: 255 }).notNull(),
+	expires: timestamp("expires", { mode: "date" }).notNull(),
+  })
+  
+  export const verificationTokens = mysqlTable(
+	"verificationToken",
+	{
+	  identifier: varchar("identifier", { length: 255 }).notNull(),
+	  token: varchar("token", { length: 255 }).notNull(),
+	  expires: timestamp("expires", { mode: "date" }).notNull(),
+	},
+	(vt) => ({
+	  compoundKey: primaryKey(vt.identifier, vt.token),
+	})
+  )
 
 export const stats = mysqlTable("stats", {
 	id: int("id").autoincrement().primaryKey().notNull(),
@@ -80,81 +130,24 @@ export const companies = mysqlTable("companies", {
 	};
   });
 
-export const accounts = mysqlTable(
-	'accounts',
-	{
-	  id: varchar('id', { length: 191 }).primaryKey().notNull(),
-	  userId: varchar('userId', { length: 191 }).notNull(),
-	  type: varchar('type', { length: 191 }).notNull(),
-	  provider: varchar('provider', { length: 191 }).notNull(),
-	  providerAccountId: varchar('providerAccountId', { length: 191 }).notNull(),
-	  access_token: text('access_token'),
-	  expires_in: int('expires_in'),
-	  id_token: text('id_token'),
-	  refresh_token: text('refresh_token'),
-	  refresh_token_expires_in: int('refresh_token_expires_in'),
-	  scope: varchar('scope', { length: 191 }),
-	  token_type: varchar('token_type', { length: 191 }),
-	  createdAt: timestamp('createdAt').defaultNow().notNull(),
-	  updatedAt: timestamp('updatedAt').defaultNow().onUpdateNow().notNull(),
-	},
-	account => ({
-	  providerProviderAccountIdIndex: uniqueIndex(
-		'accounts__provider__providerAccountId__idx'
-	  ).on(account.provider, account.providerAccountId),
-	  userIdIndex: index('accounts__userId__idx').on(account.userId),
-	})
-  );
+  export const chats = mysqlTable('chats',{
+		id: int("id").autoincrement().primaryKey().notNull(),
+		company_id: int("company_id"),
+		pdfName: text('pdf_name').notNull(),
+		pdfUrl: text('email').notNull(),
+		user_id: varchar('user_id', { length: 191 }).notNull(),
+		file_key: text('file_key').notNull(),
+		created_at: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+	});
+
+	export const messages = mysqlTable('messages',{
+		id: int("id").autoincrement().primaryKey().notNull(),
+		chat_id: int("chat_id").notNull(),
+		content: text('content').notNull(),
+		role: mysqlEnum('role', ['system', 'user']).notNull(),
+		created_at: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`).notNull()
+	});
   
-  export const sessions = mysqlTable(
-	'sessions',
-	{
-	  id: varchar('id', { length: 191 }).primaryKey().notNull(),
-	  sessionToken: varchar('sessionToken', { length: 191 }).notNull(),
-	  userId: varchar('userId', { length: 191 }).notNull(),
-	  expires: datetime('expires').notNull(),
-	  created_at: timestamp('created_at').notNull().defaultNow(),
-	  updated_at: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
-	},
-	session => ({
-	  sessionTokenIndex: uniqueIndex('sessions__sessionToken__idx').on(
-		session.sessionToken
-	  ),
-	  userIdIndex: index('sessions__userId__idx').on(session.userId),
-	})
-  );
-  
-  export const users = mysqlTable(
-	'users',
-	{
-	  id: varchar('id', { length: 191 }).primaryKey().notNull(),
-	  name: varchar('name', { length: 191 }),
-	  email: varchar('email', { length: 191 }).notNull(),
-	  emailVerified: timestamp('emailVerified'),
-	  image: varchar('image', { length: 191 }),
-	  created_at: timestamp('created_at').notNull().defaultNow(),
-	  updated_at: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
-	},
-	user => ({
-	  emailIndex: uniqueIndex('users__email__idx').on(user.email),
-	})
-  );
-  
-  export const verificationTokens = mysqlTable(
-	'verification_tokens',
-	{
-	  identifier: varchar('identifier', { length: 191 }).primaryKey().notNull(),
-	  token: varchar('token', { length: 191 }).notNull(),
-	  expires: datetime('expires').notNull(),
-	  created_at: timestamp('created_at').notNull().defaultNow(),
-	  updated_at: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
-	},
-	verificationToken => ({
-	  tokenIndex: uniqueIndex('verification_tokens__token__idx').on(
-		verificationToken.token
-	  ),
-	})
-  );
 
 //    All Relations:-
 
@@ -234,7 +227,38 @@ export const accounts = mysqlTable(
 		}),
 	}))
 
+	// Relations of chat and messages
 
+	export const chatsRelations = relations(chats, ({ one, many }) => ({
+		messages: many(messages),
+		users: one(users, {
+			fields: [chats.user_id],
+			references: [users.id],
+		}),
+		companies: one(companies, {
+			fields: [chats.company_id],
+			references: [companies.id],
+		}),
+	}))
+
+	export const messagesRelations = relations(messages, ({ one }) => ({
+		chats: one(chats, {
+			fields: [messages.chat_id],
+			references: [chats.id],
+		}),
+
+	}))
+
+	// Relations of chat and users
+
+	export const usersRelations = relations(users, ({ many }) => ({
+		chats: many(chats),
+	}))
+
+
+
+// Types
+export type DrizzleChat = InferSelectModel<typeof chats>;
 
 
 

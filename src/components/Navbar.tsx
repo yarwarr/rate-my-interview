@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Icons } from "./Icons";
 import { buttonVariants } from "./ui/Button";
-import { getAuthSession } from "../lib/auth/index";
 import UserAccountNav from "./UserAccountNav";
 import { Combobox } from "./combobox";
 import { ThemeToggle } from "./layouts/theme-toggle";
+import { getAuthSession} from "@/lib/auth";
+
 const Navbar = async () => {
   const session = await getAuthSession();
   return (
