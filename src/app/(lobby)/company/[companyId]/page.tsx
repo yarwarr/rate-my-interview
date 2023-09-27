@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { db } from "@/db";
-import { companies, faqs, stats } from "@/db/schema";
+import { companies, faqs, resume, stats } from "@/db/schema";
 import { and, desc, eq, not } from "drizzle-orm";
+import { MessageSquarePlus } from 'lucide-react';
 
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,9 @@ import InterviewFeed from "@/components/InterviewFeed";
 // import { ExtendedInterview } from "../../../../db";
 import axios from "axios";
 import FileUpload from "@/components/file-upload";
+import { getAuthSession } from "@/lib/auth";
+import { useQuery } from "@tanstack/react-query";
+import OpenChat from "@/components/open-chat";
 export const metadata: Metadata = {
   title: "Company",
   description: "Product description",
@@ -25,9 +29,16 @@ interface CompanyPageProps {
 }
 
 export default async function CompanyPage({ params }: CompanyPageProps) {
+  
+  const session = await getAuthSession()
+  // TODO: This behaviour store it in a local state
+  let hasResume = false
+  const userResume = await db.select().from(resume).where( eq(resume.user_id, session?.user.id) )
+  if(userResume.length > 0) {
+    hasResume = true
+  }
   const companyId = Number(params.companyId);
   const initialInterviews: any[] = [];
-  console.log(companyId)
   const query = `http://localhost:3000/api/company?company_id=${companyId}`;
     const { data } = await axios.get(query);
     const company: Company = data
@@ -55,7 +66,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
         <Star colorProfile="orange" />
         {company.rating}
       </div>
-      <FileUpload companyId = {companyId} />
+      <OpenChat companyId={companyId} hasResume={hasResume} />
       <InterviewFeed
         companyId={companyId}
         initialInterviews={initialInterviews}

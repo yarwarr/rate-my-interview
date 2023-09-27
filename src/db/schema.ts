@@ -134,11 +134,20 @@ export const companies = mysqlTable("companies", {
 		id: int("id").autoincrement().primaryKey().notNull(),
 		company_id: int("company_id"),
 		pdfName: text('pdf_name').notNull(),
-		pdfUrl: text('email').notNull(),
+		pdfUrl: text('pdf_url').notNull(),
 		user_id: varchar('user_id', { length: 191 }).notNull(),
 		file_key: text('file_key').notNull(),
 		created_at: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
 	});
+
+export const resume = mysqlTable('resume',{
+	id: int("id").autoincrement().primaryKey().notNull(),
+	pdfName: text('pdf_name').notNull(),
+	pdfUrl: text('pdf_url').notNull(),
+	user_id: varchar('user_id', { length: 191 }).notNull(),
+	file_key: text('file_key').notNull(),
+	created_at: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
 
 	export const messages = mysqlTable('messages',{
 		id: int("id").autoincrement().primaryKey().notNull(),
@@ -253,6 +262,14 @@ export const companies = mysqlTable("companies", {
 
 	export const usersRelations = relations(users, ({ many }) => ({
 		chats: many(chats),
+	}))
+
+	// Resume to User connection
+	export const resumeRelations = relations(resume, ({ one }) => ({
+		users: one(users, {
+			fields: [resume.user_id],
+			references: [users.id],
+		}),
 	}))
 
 

@@ -8,15 +8,14 @@ import axios  from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-const FileUpload = ({companyId}:{ companyId: number }) => {
+const FileUpload = () => {
     const router = useRouter();
     const [uploading, setUploading] = useState(false);
     const {mutate, isLoading} = useMutation({
         mutationFn: async ({file_key, file_name}: {file_key: string, file_name: string}) => {
-            const response = await axios.post('/api/create-chat', {
+            const response = await axios.post('/api/resume', {
                 file_key,
-                file_name,
-                companyId
+                file_name
             });
             return response.data;
         }
@@ -41,16 +40,15 @@ const FileUpload = ({companyId}:{ companyId: number }) => {
                     return;
                 }
                 mutate(data, {
-                    onSuccess: ({chat_id, message}) => {
+                    onSuccess: ({resume_id, message}) => {
                         toast.success(message);
-                        router.push(`/chat/${chat_id}`)
+                        // TODO: Later on do something with this resume
                     },
                     onError: (error) => {
                         toast.error('Error creating chat')
                         console.error(error);
                     }
                 })
-                console.log("data", data)
             } catch (e) {
                 console.error(e);
                 alert('Something went wrong. Please try again.');
@@ -61,9 +59,9 @@ const FileUpload = ({companyId}:{ companyId: number }) => {
         }
     })
   return (
-    <div className='p-2 bg-white rounded-xl'>
+    <div className='p-2 bg-white rounded-xl dark:bg-black'>
         <div {...getRootProps({
-            className: 'border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col'
+            className: 'border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col dark:bg-black'
         })}>
             <input {...getInputProps()} />
             {uploading || isLoading ? (<>
