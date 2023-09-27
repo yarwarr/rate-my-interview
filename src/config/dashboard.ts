@@ -1,7 +1,7 @@
-import type { SidebarNavItem } from "@/types"
+import { NavItem } from "../../types"
 
 export type DashboardConfig = {
-  sidebarNav: SidebarNavItem[]
+  sidebarNav: NavItem[]
 }
 
 export const dashboardConfig: DashboardConfig = {

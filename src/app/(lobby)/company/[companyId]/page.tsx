@@ -17,6 +17,7 @@ import FileUpload from "@/components/file-upload";
 import { getAuthSession } from "@/lib/auth";
 import { useQuery } from "@tanstack/react-query";
 import OpenChat from "@/components/open-chat";
+import { Company } from "../../../../../types";
 export const metadata: Metadata = {
   title: "Company",
   description: "Product description",

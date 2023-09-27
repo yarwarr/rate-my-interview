@@ -2,13 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import type { SidebarNavItem } from "@/types"
+import type { NavItem, SidebarNavItem } from "@/types"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/Icons"
 
 export interface SidebarNavProps {
-  items: SidebarNavItem[]
+  items: NavItem[]
 }
 
 export function SidebarNav({ items }: SidebarNavProps) {
