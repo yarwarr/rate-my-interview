@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {z} from 'zod'
 import getACompany from "@/lib/getACompany";
+import { getAuthSession } from "@/lib/auth";
 
 export async function GET(req: Request) {
     const url = new URL(req.url);

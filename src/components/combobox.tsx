@@ -28,12 +28,12 @@ export function Combobox() {
   const debouncedQuery = useDebounce(query, 300)
   const [data, setData] = React.useState<
     | {
-        companies: Pick<Company, "id" | "name" | "logo" |"companyType">[]
+      companies: Pick<Company, "id" | "name" | "logo" | "companyType">[]
 
-      }[]
+    }[]
     | null
   >(null)
-  
+
   const [isPending, startTransition] = React.useTransition()
 
   React.useEffect(() => {
@@ -73,7 +73,7 @@ export function Combobox() {
     router.push(url);
     setTimeout(() => {
       window.location.reload(); // This will reload the page after the delay
-    }, 1000);
+    }, 2000);
   };
 
   return (
@@ -86,7 +86,7 @@ export function Combobox() {
         <Icons.search className="h-4 w-4 xl:mr-2" aria-hidden="true" />
         <span className="hidden xl:inline-flex">Search companies...</span>
         <span className="sr-only">Search companies</span>
-        <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-6 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
+        <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-6 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
           <span className="text-xs">Ctrl</span>K
         </kbd>
       </Button>
@@ -113,16 +113,16 @@ export function Combobox() {
               <CommandGroup
                 key={1}
                 className="capitalize"
-                // heading={group.companyType}
+              // heading={group.companyType}
               >
                 {group.companies.map((company) => (
-                  <CommandItem
+                  <CommandItem className="cursor-pointer"
                     key={company.id}
                     onSelect={() =>
                       navigate(`/company/${company.id}`)
                     }
                   >
-                    
+
                     {company.name}
                   </CommandItem>
                 ))}

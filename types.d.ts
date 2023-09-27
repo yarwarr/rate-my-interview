@@ -35,8 +35,5 @@ type Stat = {
     difficulty: string;
     recruiter: string;
 }
-type Option = {
-    label: string
-    value: string
-}
+
 

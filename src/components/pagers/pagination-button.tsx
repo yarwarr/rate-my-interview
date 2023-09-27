@@ -3,7 +3,7 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
+import { Icons } from "@/components/Icons"
 
 interface PaginationButtonProps
   extends React.DetailedHTMLProps<

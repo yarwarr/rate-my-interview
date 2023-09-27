@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DataTable } from "@/components/data-table/data-table"
-import { Icons } from "@/components/icons"
+import { Icons } from "@/components/Icons"
 import { deleteProductAction } from "@/app/_actions/product"
 
 import { DataTableColumnHeader } from "../data-table/data-table-column-header"

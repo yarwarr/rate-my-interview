@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { getAuthSession } from "@/lib/auth";
 import { connect } from "@planetscale/database";
 import { drizzle } from 'drizzle-orm/planetscale-serverless'
-import { interviews } from "@/db/schema";
+import * as schema from "@/db/schema";
 import { eq, like, desc } from "drizzle-orm";
 import { config } from "@/db/config";
-import { db } from "@/db"
+import { interviews } from "@/db/schema";
 import {z} from 'zod'
+
+const db = drizzle(connect(config), { schema });
 
 export async function GET(req: Request) {
     const url = new URL(req.url);

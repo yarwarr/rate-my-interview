@@ -40,6 +40,13 @@ const InterviewFeed: FC<InterviewFeedProps> = ({ initialInterviews, companyId })
         return (
           <li key={interview.id} ref={ref}>
             <InterviewCard interview={interview} companyId={companyId} />
+            {/* Loading bar */}
+            {isFetchingNextPage && (
+                <div className="flex flex-col justify-center items-center space-y-2">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gray-900 dark:border-white"></div>
+                  <span className="text-gray-600 dark:text-white">Loading more Interviews</span>
+                </div>
+              )}
           </li>
         )
       } else {

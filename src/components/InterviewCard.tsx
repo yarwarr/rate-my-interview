@@ -10,20 +10,13 @@ interface InterviewCardProps {
     interview: ExtendedInterview
 }
 
-
-
-// get company data from company id using the GET /api/company/:id endpoint
-
-
-
-
 const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
     const [expanded, setExpanded] = useState(false);
     async function expandQuestions(questions: []) {
         setExpanded(!expanded)
     }
     const pRef = useRef<HTMLDivElement>(null)
-    return <div className='rounded-md bg-white shadow'>
+    return <div className='rounded-md bg-gray-400 dark:bg-gray-700 shadow'>
         <div className='px-6 py-4 flex justify-between'>
             {/* TODO Postvotes */}
 
@@ -32,7 +25,7 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
                     <span>
                         Posted by u/{interview.interviewees.name + ' '}
                     </span>
-                    new Date()
+                    {/* {formatTimeToNow(new Date())} */}
                 </div>
                 <a href={`/company/${companyId}/interview/${interview.id}`}>
                     <h1 className='text-lg font-semibold py-2 loading-6 text-gray-900'>
@@ -49,14 +42,14 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
             </div>
         </div>
 
-        <div className='bg-gray-50 z-20 text-sm p-4 sm:px-6'>
+        <div className='bg-slate-400 z-20 text-sm p-4 sm:px-6'>
             {/* href={`/company/${companyId}/interview/${interview.id}`} */}
             <a className='w-fit flex items-center gap-2 cursor-pointer' onClick={() => expandQuestions(interview.interviewToQuestions)}>
                 <MessageSquare className='h-4 w-4' /> {interview.interviewToQuestions.length} Questions
             </a>
         </div>
         {expanded && (
-            <div className='bg-gray-50 z-20 text-sm p-4 sm:px-6'>
+            <div className='bg-gray-600 z-20 text-sm p-4 sm:px-6'>
                 {/* Content of your div */}
                 <QuestionFeed questions={interview.interviewToQuestions} />
             </div>

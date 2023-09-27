@@ -7,7 +7,7 @@ interface QuestionFeedProps {
 
 const QuestionFeed: FC<QuestionFeedProps> = ({ questions }) => {
     console.log(questions)
-    return <div>
+    return <div >
         <h2>Questions:</h2>
         <ul>
             {questions.map((question: any, index: any) => (
@@ -19,4 +19,4 @@ const QuestionFeed: FC<QuestionFeedProps> = ({ questions }) => {
     </div>
 }
 
-export default QuestionFeed
+export default QuestionFeed;

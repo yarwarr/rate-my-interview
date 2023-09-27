@@ -1,16 +1,9 @@
 import { type Metadata } from "next"
-import { companies } from "@/db/schema"
-// import { env } from "@/env.mjs"
 
 import { Header } from "@/components/header"
 import { Companies } from "@/components/companies"
 import { Shell } from "@/components/shells/shell"
-import { getCompaniesAction } from "../_actions/company"
-// import { getProductsAction } from "@/app/_actions/product"
-// import { getStoresAction } from "@/app/_actions/store"
-
-// Running out of edge function execution units on vercel free plan
-// export const runtime = "edge"
+import { getCompaniesAction } from "../../_actions/company"
 
 export const metadata: Metadata = {
 //   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -31,10 +24,6 @@ export default async function CompaniesPage({
     page,
     per_page,
     sort,
-    categories,
-    subcategories,
-    price_range,
-    store_ids,
     store_page,
   } = searchParams
 
