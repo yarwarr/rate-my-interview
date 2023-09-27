@@ -51,7 +51,6 @@ const InterviewCard: FC<InterviewCardProps> = ({ companyId, interview }) => {
         {expanded && (
             <div className='bg-gray-600 z-20 text-sm p-4 sm:px-6'>
                 {/* Content of your div */}
-                Hi
                 <QuestionFeed questions={interview.interviewToQuestions} />
             </div>
         )}

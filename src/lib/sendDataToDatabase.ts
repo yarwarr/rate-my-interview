@@ -1,3 +1,4 @@
+
 import path, { dirname } from 'path';
 // import insertCompaniesFromJSON from "@/lib/createCompanies"
 import { drizzle } from 'drizzle-orm/planetscale-serverless'
@@ -173,7 +174,7 @@ async function insertInterviewDataFromFiles() {
       // Insert interview data into the "interviews" table
       const interviewIds = []
       for (let i = 0; i < interviewsData.length; i++) {
-
+        
         const interviewData = interviewsData[i];
         const interviewRecord = {
           company_id: companyId,
