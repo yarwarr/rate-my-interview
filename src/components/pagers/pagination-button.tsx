@@ -2,7 +2,7 @@ import * as React from "react"
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { Icons } from "@/components/Icons"
 
 interface PaginationButtonProps
