@@ -1,9 +1,9 @@
-import { type Product } from "@/db/schema"
+// import { type Product } from "@/db/schema"
 import { type FileWithPath } from "react-dropzone"
 import { type z } from "zod"
 
-import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
-import type { cartItemSchema, checkoutItemSchema } from "@/lib/validations/cart"
+// import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
+// import type { cartItemSchema, checkoutItemSchema } from "@/lib/validations/cart"
 import { type Icons } from "@/components/Icons"
 
 export interface NavItem {
@@ -37,7 +37,7 @@ export type MainNavItem = NavItemWithOptionalChildren
 
 export type SidebarNavItem = NavItemWithChildren
 
-export type UserRole = z.infer<typeof userPrivateMetadataSchema.shape.role>
+// export type UserRole = z.infer<typeof userPrivateMetadataSchema.shape.role>
 
 export type Option = {
   label: string
@@ -54,25 +54,25 @@ export type StoredFile = {
   url: string
 }
 
-export type CartItem = z.infer<typeof cartItemSchema>
+// export type CartItem = z.infer<typeof cartItemSchema>
 
-export type CheckoutItem = z.infer<typeof checkoutItemSchema>
+// export type CheckoutItem = z.infer<typeof checkoutItemSchema>
 
-export interface CartLineItem
-  extends Pick<
-    Product,
-    | "id"
-    | "name"
-    | "images"
-    | "category"
-    | "subcategory"
-    | "price"
-    | "inventory"
-    | "storeId"
-  > {
-  quantity?: number
-  storeName: string | null
-}
+// export interface CartLineItem
+//   extends Pick<
+//     Product,
+//     | "id"
+//     | "name"
+//     | "images"
+//     | "category"
+//     | "subcategory"
+//     | "price"
+//     | "inventory"
+//     | "storeId"
+//   > {
+//   quantity?: number
+//   storeName: string | null
+// }
 
 export type SubscriptionPlan = {
   id: "basic" | "standard" | "pro"

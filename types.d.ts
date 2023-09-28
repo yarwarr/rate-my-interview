@@ -36,10 +36,10 @@ type Stat = {
     recruiter: string;
 }
 
-export interface NavItem {
+type NavItem = {
     title: string
     href?: string
-    icon?: keyof typeof Icons
+    icon?: string
     items: []
   }
 
