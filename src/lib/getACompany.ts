@@ -3,7 +3,6 @@ import { config } from '@/db/config'
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 import { companies, faqs, stats } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { Company } from "../../types";
 
 export default async function getACompany(company_id: number): Promise<Company | null> {
     const conn = connect(config);

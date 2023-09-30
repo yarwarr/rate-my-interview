@@ -17,7 +17,7 @@ const InterviewFeed: FC<InterviewFeedProps> = ({ initialInterviews, companyId })
     threshold: 1
   })
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['infinite-query'],
+    [companyId],
     async ({ pageParam = 1 }) => {
       const query = `/api/interviews?limit=${4}&page=${pageParam}&company_id=${companyId}`;
       const { data } = await axios.get(query);

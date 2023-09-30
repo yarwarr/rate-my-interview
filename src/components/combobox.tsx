@@ -71,9 +71,6 @@ export function Combobox() {
 
   const navigate = (url: string) => {
     router.push(url);
-    setTimeout(() => {
-      window.location.reload(); // This will reload the page after the delay
-    }, 2000);
   };
 
   return (

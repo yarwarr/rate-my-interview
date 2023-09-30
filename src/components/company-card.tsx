@@ -17,24 +17,36 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Icons } from "@/components/Icons"
+import { useRouter } from "next/navigation"
+import axios from "axios"
 // import { addToCartAction } from "@/app/_actions/cart"
 
 interface CompanyCardProps extends React.HTMLAttributes<HTMLDivElement> {
   company: Company
-  variant?: "default" | "switchable"
   isAddedToCart?: boolean
-  onSwitch?: () => Promise<void>
+  onSwitch?: () => Promise<void>,
+  hasResume: boolean
 }
 
 export function CompanyCard({
   company,
-  variant = "default",
   isAddedToCart = false,
+  hasResume,
   onSwitch,
   className,
   ...props
 }: CompanyCardProps) {
   const [isPending, startTransition] = React.useTransition()
+
+  const { push } = useRouter();
+    async function createChat(companyId: number) {
+        const response = await axios.post('/api/create-chat', {companyId})
+        if(response.status == 200) {
+            const chatId = response.data.chat_id
+            push(`/chat/${companyId}`)
+        }
+        
+      }
 
   return (
     <Card
@@ -87,7 +99,6 @@ export function CompanyCard({
         </CardContent>
       </Link>
       <CardFooter className="p-4">
-        {variant === "default" ? (
           <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between">
             <Link
               aria-label="Preview Comnpany Page"
@@ -100,21 +111,12 @@ export function CompanyCard({
             >
               View Interviews
             </Link>
+            {hasResume  ? (
             <Button
               aria-label="Add to cart"
               size="sm"
               className="h-8 w-full rounded-sm"
-              onClick={() => {
-                startTransition(async () => {
-                  try {
-                    toast.success("Added to cart.")
-                  } catch (error) {
-                    error instanceof Error
-                      ? toast.error(error.message)
-                      : toast.error("Something went wrong, please try again.")
-                  }
-                })
-              }}
+              onClick={() => createChat(company.id)}
               disabled={isPending}
             >
               {isPending && (
@@ -125,32 +127,11 @@ export function CompanyCard({
               )}
               Ask Chatgpt
             </Button>
-          </div>
-        ) : (
-          <Button
-            aria-label={isAddedToCart ? "Remove from cart" : "Add to cart"}
-            size="sm"
-            className="h-8 w-full rounded-sm"
-            onClick={() => {
-              startTransition(async () => {
-                await onSwitch?.()
-              })
-            }}
-            disabled={isPending}
-          >
-            {isPending ? (
-              <Icons.spinner
-                className="mr-2 h-4 w-4 animate-spin"
-                aria-hidden="true"
-              />
-            ) : isAddedToCart ? (
-              <Icons.check className="mr-2 h-4 w-4" aria-hidden="true" />
             ) : (
-              <Icons.add className="mr-2 h-4 w-4" aria-hidden="true" />
+              <></>
             )}
-            {isAddedToCart ? "Added" : "Add to cart"}
-          </Button>
-        )}
+          </div>
+        
       </CardFooter>
     </Card>
   )

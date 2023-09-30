@@ -1,26 +1,23 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { db } from "@/db";
-import { companies, faqs, resume, stats } from "@/db/schema";
-import { and, desc, eq, not } from "drizzle-orm";
-import { MessageSquarePlus } from 'lucide-react';
-
-import { cn } from "@/lib/utils";
+import { resume } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 import { Shell } from "@/components/shells/shell";
 import { Star } from "lucide-react";
 import InterviewFeed from "@/components/InterviewFeed";
 // import { ExtendedInterview } from "../../../../db";
 import axios from "axios";
-import FileUpload from "@/components/file-upload";
 import { getAuthSession } from "@/lib/auth";
-import { useQuery } from "@tanstack/react-query";
 import OpenChat from "@/components/open-chat";
-// import { Company } from "../../../../../types";
+import { useCompany } from "@/state/company-state";
+import { dehydrate} from "@tanstack/react-query";
+import getQueryClient from "@/components/getQueryClient";
+import Hydrate from "@/components/hydrateClient";
 export const metadata: Metadata = {
   title: "Company",
-  description: "Product description",
+  description: "Company Page",
 };
 
 interface CompanyPageProps {
@@ -30,7 +27,6 @@ interface CompanyPageProps {
 }
 
 export default async function CompanyPage({ params }: CompanyPageProps) {
-  
   const session = await getAuthSession()
   // TODO: This behaviour store it in a local state
   let hasResume = false
@@ -41,8 +37,8 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
   const companyId = Number(params.companyId);
   const initialInterviews: any[] = [];
   const query = `http://localhost:3000/api/company?company_id=${companyId}`;
-    const { data } = await axios.get(query);
-    const company: Company = data
+  const res = await fetch(query, { cache: 'no-cache' })
+  const company: Company = await res.json()
 
   if (!company) {
     notFound();

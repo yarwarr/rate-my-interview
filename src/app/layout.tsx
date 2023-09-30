@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Providers>
+    
     <html lang="en" suppressHydrationWarning>
       <body
             className={cn(
@@ -29,15 +29,16 @@ export default function RootLayout({
               fontMono.variable
             )}
           >
+            <Providers>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             
             {children}
             <TailwindIndicator />
           </ThemeProvider>
+          </Providers>
       </body>
       <Toaster />
     </html>
-    
-    </Providers>
+
   );
 }

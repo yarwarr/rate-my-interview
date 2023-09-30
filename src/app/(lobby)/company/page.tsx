@@ -4,6 +4,10 @@ import { Header } from "@/components/header"
 import { Companies } from "@/components/companies"
 import { Shell } from "@/components/shells/shell"
 import { getCompaniesAction } from "../../_actions/company"
+import { db } from "@/db"
+import { resume } from "@/db/schema"
+import { eq } from "drizzle-orm"
+import { getAuthSession } from "@/lib/auth"
 
 export const metadata: Metadata = {
 //   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -26,8 +30,7 @@ export default async function CompaniesPage({
     sort,
     store_page,
   } = searchParams
-
-  // Products transaction
+  const session = await getAuthSession()
   const limit = typeof per_page === "string" ? parseInt(per_page) : 20
   const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0
 
@@ -37,7 +40,6 @@ export default async function CompaniesPage({
     sort: typeof sort === "string" ? sort : null,
     
   })
-
   const pageCount = Math.ceil(companiesTransaction.total / limit)
 
   // Stores transaction
@@ -47,7 +49,11 @@ export default async function CompaniesPage({
       ? (parseInt(store_page) - 1) * storesLimit
       : 0
 
-
+    let hasResume = false
+    const userResume = await db.select().from(resume).where( eq(resume.user_id, session?.user.id) )
+    if(userResume.length > 0) {
+      hasResume = true
+    }
   return (
     <Shell>
       <Header
@@ -56,6 +62,7 @@ export default async function CompaniesPage({
         size="sm"
       />
       <Companies
+      hasResume={hasResume}
         companies={companiesTransaction.items}
         pageCount={pageCount}
       />

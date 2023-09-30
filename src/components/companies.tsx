@@ -35,10 +35,11 @@ import { PaginationButton } from "@/components/pagers/pagination-button"
 import { CompanyCard } from "@/components/company-card"
 
 interface CompaniesProps {
-  companies: Company[]
+  companies: any[]
   pageCount: number
   companyType?: Company["companyType"]
-  storePageCount?: number
+  storePageCount?: number,
+  hasResume: boolean
 }
 
 export function Companies({
@@ -46,6 +47,7 @@ export function Companies({
   pageCount,
   companyType,
   storePageCount,
+  hasResume
 }: CompaniesProps) {
   const router = useRouter()
   const pathname = usePathname()
@@ -94,41 +96,7 @@ export function Companies({
   }, [debouncedPrice])
 
   // Category filter
-  const [selectedCategories, setSelectedCategories] = React.useState<
-    Option[] | null
-  >(null)
 
-  React.useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          categories: selectedCategories?.length
-            ? // Join categories with a dot to make search params prettier
-              selectedCategories.map((c) => c.value).join(".")
-            : null,
-        })}`
-      )
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategories])
-
-  // Subcategory filter
-  const [selectedSubcategories, setSelectedSubcategories] = React.useState<
-    Option[] | null
-  >(null)
-
-  React.useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          subcategories: selectedSubcategories?.length
-            ? selectedSubcategories.map((s) => s.value).join(".")
-            : null,
-        })}`
-      )
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSubcategories])
 
   // Store filter
   const [storeIds, setStoreIds] = React.useState<number[] | null>(
@@ -225,8 +193,6 @@ export function Companies({
                       )
 
                       setPriceRange([0, 100])
-                      setSelectedCategories(null)
-                      setSelectedSubcategories(null)
                       setStoreIds(null)
                     })
                   }}
@@ -278,7 +244,7 @@ export function Companies({
       ) : null}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {companies.map((company) => (
-          <CompanyCard key={company.id} company={company} />
+          <CompanyCard key={company.id} company={company} hasResume={hasResume} />
         ))}
       </div>
       {companies.length ? (
