@@ -22,6 +22,7 @@ export async function POST(req: Request) {
         }
         const fileKey = _chats[0].file_key
         const lastMessage = messages[messages.length - 1]
+        // TODO: I have to add a companyFile key to the chat table and use it here to get the context
         const context = await getContext(lastMessage.content, fileKey)
 
         const prompt = {

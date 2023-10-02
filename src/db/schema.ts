@@ -123,6 +123,7 @@ export const companies = mysqlTable("companies", {
 	companySize: varchar("companySize", { length: 255 }).notNull(),
 	companyType: varchar("companyType", { length: 255 }).notNull(),
 	description: text("description").notNull(),
+	pdfUrl: text('pdf_url')
   },
   (table) => {
 	return {
@@ -218,15 +219,12 @@ export const resume = mysqlTable('resume',{
 		}),
 	}))
 
-	export const interviewToQuestionRelations = relations(interview_to_questions, ({ one, }) => ({
+	export const interviewToQuestionRelations = relations(interview_to_questions, ({ one, many }) => ({
 		interviews: one(interviews, {
 			fields: [interview_to_questions.interview_id],
 			references: [interviews.id],
 		}),
-		questions: one(questions, {
-			fields: [interview_to_questions.question_id],
-			references: [questions.id],
-		}),
+		questions: many(questions),
 	}))
 
 	export const questionsRelations = relations(questions, ({ one }) => ({

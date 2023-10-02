@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { db } from "@/db";
 import { resume } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -7,14 +7,8 @@ import { eq } from "drizzle-orm";
 import { Shell } from "@/components/shells/shell";
 import { Star } from "lucide-react";
 import InterviewFeed from "@/components/InterviewFeed";
-// import { ExtendedInterview } from "../../../../db";
-import axios from "axios";
 import { getAuthSession } from "@/lib/auth";
 import OpenChat from "@/components/open-chat";
-import { useCompany } from "@/state/company-state";
-import { dehydrate} from "@tanstack/react-query";
-import getQueryClient from "@/components/getQueryClient";
-import Hydrate from "@/components/hydrateClient";
 export const metadata: Metadata = {
   title: "Company",
   description: "Company Page",

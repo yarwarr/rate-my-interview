@@ -30,6 +30,7 @@ export async function POST(req: Request, res: Response) {
             user_id: session?.user.id,
             company_id: companyId
         })
+        // Load the company data to Pinecone if not already loaded
         console.log(chat.insertId)
         return NextResponse.json({chat_id: chat.insertId, message: "Success", status: 200})
     } catch (error) {

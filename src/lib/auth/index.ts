@@ -28,7 +28,6 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = user.id
       }
-      console.log('session', session)
       return session
     },
   },
@@ -40,12 +39,5 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 }
-
-// export const getServerAuthSession = (ctx: {
-//   req: GetServerSidePropsContext["req"]
-//   res: GetServerSidePropsContext["res"]
-// }) => {
-//   return getServerSession(ctx.req, ctx.res, authOptions)
-// }
 
 export const getAuthSession = () => getServerSession(authOptions)

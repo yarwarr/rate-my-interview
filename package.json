@@ -10,7 +10,8 @@
     "introspect": "drizzle-kit introspect:mysql",
     "migrate": "drizzle-kit generate:mysql",
     "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
-    "studio": "drizzle-kit studio"
+    "studio": "drizzle-kit studio",
+    "drizzle-drop": "drizzle-kit drop"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.2",
@@ -36,6 +37,7 @@
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "@uploadthing/react": "^5.6.1",
     "ai": "^2.2.12",
     "autoprefixer": "10.4.14",
     "aws-sdk": "^2.1459.0",
@@ -48,6 +50,7 @@
     "drizzle-orm": "^0.27.2",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "handlebars": "^4.7.8",
     "langchain": "^0.0.150",
     "lucide-react": "^0.259.0",
     "md5": "^2.3.0",
@@ -57,7 +60,9 @@
     "next-themes": "^0.2.1",
     "openai-edge": "^1.2.2",
     "pdf-parse": "^1.1.1",
+    "pdfkit": "^0.13.0",
     "postcss": "8.4.25",
+    "puppeteer": "^19.11.1",
     "radix-ui": "^1.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -66,11 +71,13 @@
     "react-redux": "^8.1.2",
     "react-wrap-balancer": "^1.0.0",
     "sonner": "^0.6.2",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "uploadthing": "^5.6.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/pdfkit": "^0.12.12",
     "dotenv": "^16.3.1",
     "drizzle-kit": "^0.19.13",
     "encoding": "^0.1.13",

@@ -8,7 +8,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
     const session = await getAuthSession()
-    console.log(session?.user.id)
     if(!session) {
         return NextResponse.json({error: 'Not authorized'}, {status: 401})
     }
@@ -37,7 +36,6 @@ export async function POST(req: Request, res: Response) {
 
 export async function PUT(req: Request, res: Response) {
     const session = await getAuthSession()
-    console.log(session?.user.id)
     if (!session) {
         return NextResponse.json({ error: 'Not authorized' }, { status: 401 })
     }
@@ -73,7 +71,6 @@ export async function PUT(req: Request, res: Response) {
 
 export async function DELETE(req: Request, res: Response) {
     const session = await getAuthSession()
-    console.log(session?.user.id)
     if (!session) {
         return NextResponse.json({ error: 'Not authorized' }, { status: 401 })
     }
