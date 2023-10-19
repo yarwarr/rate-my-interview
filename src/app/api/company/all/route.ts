@@ -49,7 +49,13 @@ export async function POST(req: Request) {
 
         // TODO: Gotta find a way to get embedding for free so I dont reach the OpenAI limit
         // Now I have to load the pdf to pinecone so it can be queried later on
-        await loadCompanyIntoPinecone(results2)
+        const laodedIntoPinecone = await loadCompanyIntoPinecone(results2)
+        console.log(laodedIntoPinecone)
+        if(laodedIntoPinecone) {
+            await db.update(companies)
+            .set({ storedPinecone: 1 })
+            .where(eq(companies.id, parseInt(company_id)));
+        }
         return NextResponse.json(results2, {status: 200})
         
     } catch (error) {

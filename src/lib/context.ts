@@ -12,7 +12,9 @@ export async function getMatchesFromEmbeddings(embeddings: number[], fileKey: st
     const index = await pinecone.Index('chatpdf')
 
     try  {
-        const namespace = convertToAscii(fileKey)
+        // TODO: I have to implement the logic here
+        // const namespace = convertToAscii(fileKey)
+        const namespace = 'Amazon_1.pdf'
         const queryResult = await index.query({
             queryRequest: {
                 topK: 5,
@@ -31,7 +33,7 @@ export async function getContext(query: string, fileKey: string) {
     const queryEmbeddings = await getEmbedding(query)
     const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey)
 
-    const qualifyingDocs = matches.filter(match => match.score && match.score > 0.7)
+    const qualifyingDocs = matches.filter(match => match.score && match.score > 0.8)
 
     type Metadata  = {
         text: string, 
@@ -39,5 +41,6 @@ export async function getContext(query: string, fileKey: string) {
     }
 
     let docs = qualifyingDocs.map(match => (match.metadata as Metadata).text)
+    console.log(docs.join('\n').substring(0, 3000))
     return docs.join('\n').substring(0, 3000)
 }

@@ -123,7 +123,8 @@ export const companies = mysqlTable("companies", {
 	companySize: varchar("companySize", { length: 255 }).notNull(),
 	companyType: varchar("companyType", { length: 255 }).notNull(),
 	description: text("description").notNull(),
-	pdfUrl: text('pdf_url')
+	pdfUrl: text('pdf_url'),
+	storedPinecone: int('storedPinecone').default(0).notNull()
   },
   (table) => {
 	return {

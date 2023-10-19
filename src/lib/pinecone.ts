@@ -143,7 +143,8 @@ export async function loadCompanyIntoPinecone(companyData: any) {
         console.log('Namespace', namespace)
         PineconeUtils.chunkedUpsert(pineconeIndex, vectors, namespace, 10)
     
-        return documents[0]
+        console.log(documents[0])
+        return true;
     } catch (error) {
         console.log(error)
     }
