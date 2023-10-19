@@ -1,79 +1,214 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, index, varchar, text, int, timestamp, datetime } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, primaryKey, varchar, int, text, timestamp, unique, mysqlEnum } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 
 export const accounts = mysqlTable("accounts", {
-	id: varchar("id", { length: 191 }).primaryKey().notNull(),
-	userId: varchar("userId", { length: 191 }).notNull(),
-	type: varchar("type", { length: 191 }).notNull(),
-	provider: varchar("provider", { length: 191 }).notNull(),
-	providerAccountId: varchar("providerAccountId", { length: 191 }).notNull(),
-	accessToken: text("access_token"),
-	expiresIn: int("expires_in"),
-	idToken: text("id_token"),
-	refreshToken: text("refresh_token"),
+	userId: varchar("userId", { length: 255 }).notNull(),
+	type: varchar("type", { length: 255 }).notNull(),
+	provider: varchar("provider", { length: 255 }).notNull(),
+	providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
+	refreshToken: varchar("refresh_token", { length: 255 }),
 	refreshTokenExpiresIn: int("refresh_token_expires_in"),
-	scope: varchar("scope", { length: 191 }),
-	tokenType: varchar("token_type", { length: 191 }),
-	createdAt: timestamp("createdAt", { mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	accessToken: varchar("access_token", { length: 255 }),
+	expiresAt: int("expires_at"),
+	tokenType: varchar("token_type", { length: 255 }),
+	scope: varchar("scope", { length: 255 }),
+	idToken: text("id_token"),
+	sessionState: text("session_state"),
 },
 (table) => {
 	return {
-		providerProviderAccountIdIdx: uniqueIndex("accounts__provider__providerAccountId__idx").on(table.provider, table.providerAccountId),
-		userIdIdx: index("accounts__userId__idx").on(table.userId),
+		accountsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const chats = mysqlTable("chats", {
+	id: int("id").autoincrement().notNull(),
+	companyId: int("company_id"),
+	pdfName: text("pdf_name").notNull(),
+	pdfUrl: text("pdf_url").notNull(),
+	userId: varchar("user_id", { length: 191 }).notNull(),
+	fileKey: text("file_key").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => {
+	return {
+		chatsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
 	}
 });
 
 export const companies = mysqlTable("companies", {
-	id: int("id").autoincrement().primaryKey().notNull(),
+	id: int("id").autoincrement().notNull(),
+	name: varchar("name", { length: 255 }).notNull(),
+	logo: varchar("logo", { length: 255 }).notNull(),
+	rating: varchar("rating", { length: 3 }).notNull(),
+	reviewsLink: varchar("reviewsLink", { length: 255 }).notNull(),
+	reviewsCount: varchar("reviewsCount", { length: 10 }).notNull(),
+	reviewsText: varchar("reviewsText", { length: 255 }).notNull(),
+	salariesLink: varchar("salariesLink", { length: 255 }).notNull(),
+	salariesCount: varchar("salariesCount", { length: 10 }).notNull(),
+	jobsLink: varchar("jobsLink", { length: 255 }).notNull(),
+	jobsCount: varchar("jobsCount", { length: 10 }).notNull(),
+	location: varchar("location", { length: 255 }).notNull(),
+	locationLink: varchar("locationLink", { length: 255 }).notNull(),
+	companySize: varchar("companySize", { length: 255 }).notNull(),
+	companyType: varchar("companyType", { length: 255 }).notNull(),
+	description: text("description").notNull(),
+	pdfUrl: text("pdf_url"),
+	storedPinecone: int("storedPinecone").default(0).notNull(),
+},
+(table) => {
+	return {
+		companiesProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+		name: unique("name").on(table.name),
+	}
+});
+
+export const faqs = mysqlTable("faqs", {
+	id: int("id").autoincrement().notNull(),
+	companyId: int("company_id").notNull(),
+	question: varchar("question", { length: 255 }).notNull(),
+	answer: text("answer").notNull(),
+},
+(table) => {
+	return {
+		faqsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const interviewQuestions = mysqlTable("interview_questions", {
+	id: int("id").autoincrement().notNull(),
+	interviewId: int("interview_id").notNull(),
+	questionId: int("question_id").notNull(),
+},
+(table) => {
+	return {
+		interviewQuestionsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const interviewees = mysqlTable("interviewees", {
+	id: int("id").autoincrement().notNull(),
 	name: varchar("name", { length: 255 }).notNull(),
 },
 (table) => {
 	return {
-		name: uniqueIndex("name").on(table.name),
+		intervieweesProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const interviews = mysqlTable("interviews", {
+	id: int("id").autoincrement().notNull(),
+	companyId: int("company_id").notNull(),
+	intervieweeId: int("interviewee_id").notNull(),
+	positionId: int("position_id").notNull(),
+	offerStatus: varchar("offer_status", { length: 255 }).notNull(),
+	experience: varchar("experience", { length: 255 }).notNull(),
+	interviewProcess: text("interview_process").notNull(),
+	difficulty: varchar("difficulty", { length: 255 }).notNull(),
+},
+(table) => {
+	return {
+		interviewsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const messages = mysqlTable("messages", {
+	id: int("id").autoincrement().notNull(),
+	chatId: int("chat_id").notNull(),
+	content: text("content").notNull(),
+	role: mysqlEnum("role", ['system','user']).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => {
+	return {
+		messagesProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const positions = mysqlTable("positions", {
+	id: int("id").autoincrement().notNull(),
+	companyId: int("company_id").notNull(),
+	name: varchar("name", { length: 255 }).notNull(),
+},
+(table) => {
+	return {
+		positionsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const questions = mysqlTable("questions", {
+	id: int("id").autoincrement().notNull(),
+	text: text("text").notNull(),
+},
+(table) => {
+	return {
+		questionsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const resume = mysqlTable("resume", {
+	id: int("id").autoincrement().notNull(),
+	pdfName: text("pdf_name").notNull(),
+	pdfUrl: text("pdf_url").notNull(),
+	userId: varchar("user_id", { length: 191 }).notNull(),
+	fileKey: text("file_key").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => {
+	return {
+		resumeProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
 	}
 });
 
 export const sessions = mysqlTable("sessions", {
-	id: varchar("id", { length: 191 }).primaryKey().notNull(),
-	sessionToken: varchar("sessionToken", { length: 191 }).notNull(),
-	userId: varchar("userId", { length: 191 }).notNull(),
-	expires: datetime("expires", { mode: 'string'}).notNull(),
-	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	sessionToken: varchar("sessionToken", { length: 255 }).notNull(),
+	userId: varchar("userId", { length: 255 }).notNull(),
+	expires: timestamp("expires", { mode: 'string' }).notNull(),
 },
 (table) => {
 	return {
-		sessionTokenIdx: uniqueIndex("sessions__sessionToken__idx").on(table.sessionToken),
-		userIdIdx: index("sessions__userId__idx").on(table.userId),
+		sessionsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
+	}
+});
+
+export const stats = mysqlTable("stats", {
+	id: int("id").autoincrement().notNull(),
+	positiveExperience: varchar("positive_experience", { length: 20 }),
+	negativeExperience: varchar("negative_experience", { length: 20 }),
+	neutralExperience: varchar("neutral_experience", { length: 20 }),
+	appliedOnline: varchar("applied_online", { length: 20 }),
+	recruiter: varchar("recruiter", { length: 20 }),
+	employeeReferral: varchar("employee_referral", { length: 20 }),
+	difficulty: varchar("difficulty", { length: 20 }),
+	companyId: int("company_id").notNull(),
+},
+(table) => {
+	return {
+		statsProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
 	}
 });
 
 export const users = mysqlTable("users", {
-	id: varchar("id", { length: 191 }).primaryKey().notNull(),
-	name: varchar("name", { length: 191 }),
-	email: varchar("email", { length: 191 }).notNull(),
+	id: varchar("id", { length: 255 }).notNull(),
+	name: varchar("name", { length: 255 }),
+	email: varchar("email", { length: 255 }).notNull(),
 	emailVerified: timestamp("emailVerified", { mode: 'string' }),
-	image: varchar("image", { length: 191 }),
-	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	image: varchar("image", { length: 255 }),
 },
 (table) => {
 	return {
-		emailIdx: uniqueIndex("users__email__idx").on(table.email),
+		usersProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
 	}
 });
 
-export const verificationTokens = mysqlTable("verification_tokens", {
-	identifier: varchar("identifier", { length: 191 }).primaryKey().notNull(),
-	token: varchar("token", { length: 191 }).notNull(),
-	expires: datetime("expires", { mode: 'string'}).notNull(),
-	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+export const verificationToken = mysqlTable("verificationToken", {
+	identifier: varchar("identifier", { length: 255 }).notNull(),
+	token: varchar("token", { length: 255 }).notNull(),
+	expires: timestamp("expires", { mode: 'string' }).notNull(),
 },
 (table) => {
 	return {
-		tokenIdx: uniqueIndex("verification_tokens__token__idx").on(table.token),
+		verificationTokenProviderProviderAccountId: primaryKey(table.provider, table.providerAccountId),
 	}
 });
