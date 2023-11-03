@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, int, varchar, timestamp, text, index, datetime, mysqlEnum, primaryKey } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, uniqueIndex, int, varchar, timestamp, text, index, datetime, mysqlEnum, primaryKey, mysqlTableCreator } from "drizzle-orm/mysql-core"
 import { relations, sql} from "drizzle-orm"
 // @ts-ignore
 import { InferSelectModel, InferInsertModel } from 'drizzle-orm'
@@ -6,6 +6,8 @@ import type { AdapterAccount } from "@auth/core/adapters";
 // Run these commands to migrate and then push
 // "migrate": "drizzle-kit generate:mysql",
 // "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
+
+// export const mysqlTable1 = mysqlTableCreator((name) => {name});
 
 export const users = mysqlTable("users", {
 	id: varchar("id", { length: 255 }).notNull().primaryKey(),

@@ -13,8 +13,8 @@ export async function getMatchesFromEmbeddings(embeddings: number[], fileKey: st
 
     try  {
         // TODO: I have to implement the logic here
-        // const namespace = convertToAscii(fileKey)
-        const namespace = 'Amazon_1.pdf'
+        const namespace = convertToAscii(fileKey)
+        // const namespace = 'Amazon_1.pdf'
         const queryResult = await index.query({
             queryRequest: {
                 topK: 5,

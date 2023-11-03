@@ -39,11 +39,11 @@ const page = async ({ params: { companyId } }: Props) => {
         </div>
         {/* PDF Viewer */}
         <div className="max-h-screen p-4 overflow-scroll flex-[4]">
-            <PDFViewer pdf_url={currentChat?.chats.pdfUrl || ""} />
+          <PDFViewer pdf_url={currentChat?.chats.pdfUrl || ""} />
         </div>
         {/* Chat component */}
         <div className="flex-[4] border-1-4 border-1-slate-200">
-            <ChatComponent chatId={currentChat?.chats.id!} />
+          <ChatComponent chatId={currentChat?.chats.id!} />
         </div>
       </div>
     </div>
