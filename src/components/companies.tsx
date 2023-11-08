@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { companies} from "@/db/schema"
-import { getSubcategories, sortOptions } from "@/config/products"
+import { companies } from "@/db/schema"
+// import { getSubcategories, sortOptions } from "@/config/products"
 import { cn } from "@/lib/utils"
 import { useDebounce } from "@/hooks/use-debounce"
 import { Button } from "@/components/ui/Button"
@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/sheet"
 import { Slider } from "@/components/ui/slider"
 import { Icons } from "@/components/Icons"
-import { MultiSelect } from "@/components/multi-select"
+
 import { PaginationButton } from "@/components/pagers/pagination-button"
 import { CompanyCard } from "@/components/company-card"
 
@@ -172,7 +172,7 @@ export function Companies({
                   />
                 </div>
               </div>
-              
+
             </div>
             <div>
               <Separator className="my-4" />
@@ -214,7 +214,7 @@ export function Companies({
           <DropdownMenuContent align="start" className="w-48">
             <DropdownMenuLabel>Sort by</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {sortOptions.map((option) => (
+            {/* {sortOptions.map((option) => (
               <DropdownMenuItem
                 key={option.label}
                 className={cn(option.value === sort && "font-bold")}
@@ -230,7 +230,7 @@ export function Companies({
               >
                 {option.label}
               </DropdownMenuItem>
-            ))}
+            ))} */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

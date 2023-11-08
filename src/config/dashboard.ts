@@ -1,5 +1,3 @@
-import { NavItem } from "../../types"
-
 export type DashboardConfig = {
   sidebarNav: NavItem[]
 }

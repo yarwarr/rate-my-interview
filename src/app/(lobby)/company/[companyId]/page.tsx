@@ -24,8 +24,8 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
   const session = await getAuthSession()
   // TODO: This behaviour store it in a local state
   let hasResume = false
-  const userResume = await db.select().from(resume).where( eq(resume.user_id, session?.user.id) )
-  if(userResume.length > 0) {
+  const userResume = await db.select().from(resume).where(eq(resume.user_id, session?.user.id))
+  if (userResume.length > 0) {
     hasResume = true
   }
   const companyId = Number(params.companyId);
@@ -46,6 +46,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
             className="w-40 h-40"
             src={company.logo}
             referrerPolicy="no-referrer"
+
           />
           <h1 className="mt-2 inline-block text-4xl font-bold leading-tight lg:text-5xl">
             {company.name}
