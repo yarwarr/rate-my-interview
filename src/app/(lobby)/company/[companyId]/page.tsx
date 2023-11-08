@@ -30,7 +30,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
   }
   const companyId = Number(params.companyId);
   const initialInterviews: any[] = [];
-  const query = `http://localhost:3000/api/company?company_id=${companyId}`;
+  const query = `${process.env.URL}/api/company?company_id=${companyId}`;
   const res = await fetch(query, { cache: 'no-cache' })
   const company: Company = await res.json()
 
