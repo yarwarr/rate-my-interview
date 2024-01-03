@@ -135,7 +135,7 @@ export const companies = mysqlTable("companies", {
   });
 
   export const chats = mysqlTable('chats',{
-		id: int("id").autoincrement().primaryKey().notNull(),
+		id: int("id").autoincrement().notNull(),
 		company_id: int("company_id"),
 		pdfName: text('pdf_name').notNull(),
 		pdfUrl: text('pdf_url').notNull(),

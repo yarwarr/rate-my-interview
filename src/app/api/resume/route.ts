@@ -24,7 +24,6 @@ export async function POST(req: Request, res: Response) {
                 pdfUrl: getS3Url(file_key),
                 user_id: session?.user.id,
             })
-            console.log(resume1.insertId)
             return NextResponse.json({resume_id: resume1.insertId, message: "Success", status: 200})
         }
     } catch (error) {
